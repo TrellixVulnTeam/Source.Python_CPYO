@@ -117,6 +117,11 @@ bool CPythonManager::Initialize( void )
  	Py_SetProgramName(wszProgramName);
 	Py_SetPath(wszPythonHome);
 
+	ICommandLine* pCommandLine = CommandLine();
+
+	// Set standard stream encoding.
+	Py_SetStandardStreamEncoding(pCommandLine->ParmValue("-sp_standard_stream_encoding"), NULL);
+
 	// Initialize python and its namespaces.
 	Py_Initialize();
 
@@ -125,7 +130,6 @@ bool CPythonManager::Initialize( void )
 	
 	// Set sys.argv and update sys.path
 	DevMsg(1, MSG_PREFIX "Setting sys.argv...\n");
-	ICommandLine* pCommandLine = CommandLine();
 
 	int iParamCount = pCommandLine->ParmCount();
 	wchar_t** argv = new wchar_t*[iParamCount];
